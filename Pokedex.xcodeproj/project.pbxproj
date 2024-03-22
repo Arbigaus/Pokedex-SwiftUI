@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D71A158D2BACFD3E00FEB579 /* MiniService in Frameworks */ = {isa = PBXBuildFile; productRef = D71A158C2BACFD3E00FEB579 /* MiniService */; };
+		D71A15932BACFE5400FEB579 /* PokemonListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71A15922BACFE5400FEB579 /* PokemonListModel.swift */; };
+		D7A3C3412BAD039F00F3801F /* PokemonListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A3C3402BAD039F00F3801F /* PokemonListViewModel.swift */; };
+		D7A3C3432BAD03AA00F3801F /* PokemonListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A3C3422BAD03AA00F3801F /* PokemonListView.swift */; };
 		D7D381972BACFCBF00FADC53 /* PokedexApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D381962BACFCBF00FADC53 /* PokedexApp.swift */; };
 		D7D381992BACFCBF00FADC53 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D381982BACFCBF00FADC53 /* ContentView.swift */; };
 		D7D3819B2BACFCC100FADC53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7D3819A2BACFCC100FADC53 /* Assets.xcassets */; };
@@ -34,6 +38,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D71A15922BACFE5400FEB579 /* PokemonListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListModel.swift; sourceTree = "<group>"; };
+		D7A3C3402BAD039F00F3801F /* PokemonListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListViewModel.swift; sourceTree = "<group>"; };
+		D7A3C3422BAD03AA00F3801F /* PokemonListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListView.swift; sourceTree = "<group>"; };
 		D7D381932BACFCBF00FADC53 /* Pokedex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pokedex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D381962BACFCBF00FADC53 /* PokedexApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokedexApp.swift; sourceTree = "<group>"; };
 		D7D381982BACFCBF00FADC53 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -51,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D71A158D2BACFD3E00FEB579 /* MiniService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +79,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D71A158E2BACFD4500FEB579 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				D7A3C33F2BACFFD600F3801F /* PokemonList */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		D71A158F2BACFD5000FEB579 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D71A15922BACFE5400FEB579 /* PokemonListModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D71A15912BACFDA500FEB579 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				D7D3819A2BACFCC100FADC53 /* Assets.xcassets */,
+				D7D381962BACFCBF00FADC53 /* PokedexApp.swift */,
+				D7D381982BACFCBF00FADC53 /* ContentView.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		D7A3C33F2BACFFD600F3801F /* PokemonList */ = {
+			isa = PBXGroup;
+			children = (
+				D7A3C3402BAD039F00F3801F /* PokemonListViewModel.swift */,
+				D7A3C3422BAD03AA00F3801F /* PokemonListView.swift */,
+			);
+			path = PokemonList;
+			sourceTree = "<group>";
+		};
 		D7D3818A2BACFCBF00FADC53 = {
 			isa = PBXGroup;
 			children = (
@@ -94,9 +137,9 @@
 		D7D381952BACFCBF00FADC53 /* Pokedex */ = {
 			isa = PBXGroup;
 			children = (
-				D7D381962BACFCBF00FADC53 /* PokedexApp.swift */,
-				D7D381982BACFCBF00FADC53 /* ContentView.swift */,
-				D7D3819A2BACFCC100FADC53 /* Assets.xcassets */,
+				D71A15912BACFDA500FEB579 /* Application */,
+				D71A158F2BACFD5000FEB579 /* Models */,
+				D71A158E2BACFD4500FEB579 /* Scenes */,
 				D7D3819C2BACFCC100FADC53 /* Preview Content */,
 			);
 			path = Pokedex;
@@ -143,6 +186,9 @@
 			dependencies = (
 			);
 			name = Pokedex;
+			packageProductDependencies = (
+				D71A158C2BACFD3E00FEB579 /* MiniService */,
+			);
 			productName = Pokedex;
 			productReference = D7D381932BACFCBF00FADC53 /* Pokedex.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +261,9 @@
 				Base,
 			);
 			mainGroup = D7D3818A2BACFCBF00FADC53;
+			packageReferences = (
+				D71A158B2BACFD3E00FEB579 /* XCRemoteSwiftPackageReference "MiniService" */,
+			);
 			productRefGroup = D7D381942BACFCBF00FADC53 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -257,7 +306,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7A3C3432BAD03AA00F3801F /* PokemonListView.swift in Sources */,
+				D71A15932BACFE5400FEB579 /* PokemonListModel.swift in Sources */,
 				D7D381992BACFCBF00FADC53 /* ContentView.swift in Sources */,
+				D7A3C3412BAD039F00F3801F /* PokemonListViewModel.swift in Sources */,
 				D7D381972BACFCBF00FADC53 /* PokedexApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -588,6 +640,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D71A158B2BACFD3E00FEB579 /* XCRemoteSwiftPackageReference "MiniService" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Arbigaus/MiniService";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D71A158C2BACFD3E00FEB579 /* MiniService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D71A158B2BACFD3E00FEB579 /* XCRemoteSwiftPackageReference "MiniService" */;
+			productName = MiniService;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D7D3818B2BACFCBF00FADC53 /* Project object */;
 }
