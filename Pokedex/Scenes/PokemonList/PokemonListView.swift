@@ -11,20 +11,28 @@ struct PokemonListView: View {
     @ObservedObject private var viewModel = PokemonListViewModel()
 
     var body: some View {
-        List(viewModel.pokemonList) { pokemon in
-            HStack(spacing: 18) {
-                AsyncImage(url: pokemon.imgUrl)
-                    .frame(width: 50, height: 50)
-                    .padding(6)
-                Text(pokemon.name)
-                    .font(.title)
-                    .foregroundStyle(.black)
+        NavigationStack {
+            List(viewModel.pokemonList) { pokemon in
+                NavigationLink(value: pokemon) {
+                    HStack(spacing: 18) {
+                        AsyncImage(url: pokemon.imgUrl)
+                            .frame(width: 50, height: 50)
+                            .padding(6)
+                        Text(pokemon.name)
+                            .font(.title)
+                            .foregroundStyle(.black)
+                    }
+                }
             }
+            .listStyle(.inset)
+            .navigationDestination(for: PokemonListItemModel.self) { poke in
+                PokemonDetailView(viewModel: PokemonDetailViewModel(pokeId: poke.id ?? 0))
+            }
+            .task {
+                await viewModel.fetchPokemonList()
+            }
+            .navigationTitle("Pokémons")
         }
-        .task {
-            await viewModel.fetchPokemonList()
-        }
-        .navigationTitle("Pokémons")
     }
 }
 

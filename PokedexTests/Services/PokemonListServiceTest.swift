@@ -32,7 +32,7 @@ final class PokemonListServiceTest: XCTestCase {
             let result = try await service.fetchPokeList()
 
             XCTAssertNotNil(result, "Pokemon list should not be nil")
-            XCTAssertEqual(result, PokemonListModel.mock())
+            XCTAssertEqual(result, PokemonListModel.mockPokeListModel())
         } catch {
             XCTFail("Fetching Pokemon list should not throw an error")
         }

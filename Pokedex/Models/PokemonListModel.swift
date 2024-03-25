@@ -23,7 +23,7 @@ struct PokemonListModel: Decodable {
     }
 }
 
-struct PokemonListItemModel: Decodable, Identifiable {
+struct PokemonListItemModel: Decodable, Identifiable, Hashable {
     var id: Int? {
         pokeId()
     }

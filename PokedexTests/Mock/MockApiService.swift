@@ -27,7 +27,7 @@ final class MockAPIService: APIServiceProtocol {
     }
 
     func post<ResponseType, PayloadType>(endpoint: String, payload: PayloadType) async throws -> ResponseType where ResponseType : Decodable, PayloadType : Encodable {
-        let mockData = PokemonListModel.mock()
+        let mockData = PokemonListModel.mockPokeListModel()
         if let response = mockData as? ResponseType {
             return response
         }
@@ -35,7 +35,7 @@ final class MockAPIService: APIServiceProtocol {
     }
 
     func put<ResponseType, PayloadType>(endpoint: String, payload: PayloadType) async throws -> ResponseType where ResponseType : Decodable, PayloadType : Encodable {
-        let mockData = PokemonListModel.mock()
+        let mockData = PokemonListModel.mockPokeListModel()
         if let response = mockData as? ResponseType {
             return response
         }
@@ -46,7 +46,7 @@ final class MockAPIService: APIServiceProtocol {
 
         switch expected {
         case .success:
-            let mockData = PokemonListModel.mock()
+            let mockData = PokemonListModel.mockPokeListModel()
             if let response = mockData as? ResponseType {
                 return response
             }
@@ -62,7 +62,7 @@ final class MockAPIService: APIServiceProtocol {
 }
 
 extension PokemonListModel {
-    static func mock() -> PokemonListModel {
+    static func mockPokeListModel() -> PokemonListModel {
         let results = [
             PokemonListItemModel(name: "Pikachu", url: "https://pokeapi.co/api/v2/pokemon/25"),
             PokemonListItemModel(name: "Bulbasaur", url: "https://pokeapi.co/api/v2/pokemon/1"),
