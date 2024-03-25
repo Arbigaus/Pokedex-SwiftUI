@@ -9,14 +9,21 @@ import Foundation
 import MiniService
 
 class PokemonListViewModel: ObservableObject {
-    private let service:APIServiceProtocol = APIService()
+    private let service: PokemonListServiceProtocol = PokemonListService()
 
 //    @Published var isLoading = true
     @Published var pokemonList = [PokemonListItemModel]()
 
+    @MainActor
     func fetchPokemonList() async {
-        // TODO: Fetch list
-       
+        do {
+            let result = try await service.fetchPokeList()
+            pokemonList = result.results
+        }
+        catch(let error) {
+            print(error.localizedDescription)
+        }
+
     }
 }
 
