@@ -8,8 +8,23 @@
 import SwiftUI
 
 struct PokemonListView: View {
+    @ObservedObject private var viewModel = PokemonListViewModel()
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List(viewModel.pokemonList) { pokemon in
+            HStack(spacing: 18) {
+                AsyncImage(url: pokemon.imgUrl)
+                    .frame(width: 50, height: 50)
+                    .padding(6)
+                Text(pokemon.name)
+                    .font(.title)
+                    .foregroundStyle(.black)
+            }
+        }
+        .task {
+            await viewModel.fetchPokemonList()
+        }
+        .navigationTitle("Pokémons")
     }
 }
 
