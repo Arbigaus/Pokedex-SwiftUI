@@ -10,7 +10,7 @@ import MiniService
 @testable import Pokedex
 
 final class PokemonListServiceTest: XCTestCase {
-    var mockService: APIServiceProtocol!
+    var mockService: MockAPIService!
     var service: PokemonListService!
 
     override func setUp() {
@@ -27,14 +27,27 @@ final class PokemonListServiceTest: XCTestCase {
     }
 
     func test_successFetchPokeList() async {
+        mockService.expected = .success
         do {
             let result = try await service.fetchPokeList()
 
-            // Then
             XCTAssertNotNil(result, "Pokemon list should not be nil")
             XCTAssertEqual(result, PokemonListModel.mock())
-        } catch {gst
+        } catch {
             XCTFail("Fetching Pokemon list should not throw an error")
+        }
+    }
+
+    func test_failureFetchPokeList() async {
+        let nsError = NSError(domain: "Some Error", code: 1)
+        mockService.expected = .failure(nsError)
+
+        do {
+            let result = try await service.fetchPokeList()
+
+            XCTFail("Returned susccess, exptect error instead")
+        } catch(let error) {
+            XCTAssertEqual(error as NSError, nsError)
         }
     }
 

@@ -9,8 +9,14 @@ import Foundation
 import MiniService
 @testable import Pokedex
 
+enum ExpectResponse {
+    case success
+    case failure(Error)
+}
+
 final class MockAPIService: APIServiceProtocol {
     static var urlBase: String?
+    var expected: ExpectResponse?
 
     static func setBaseURL(_ baseUrl: String) {
         self.urlBase = baseUrl
@@ -37,11 +43,21 @@ final class MockAPIService: APIServiceProtocol {
     }
 
     func get<ResponseType>(endpoint: String) async throws -> ResponseType where ResponseType : Decodable {
-        let mockData = PokemonListModel.mock()
-        if let response = mockData as? ResponseType {
-            return response
+
+        switch expected {
+        case .success:
+            let mockData = PokemonListModel.mock()
+            if let response = mockData as? ResponseType {
+                return response
+            }
+            throw NSError(domain: "Some error", code: 0)
+        case .failure(let error):
+            throw error
+        case .none:
+            throw NSError(domain: "Some error", code: 0)
         }
-        throw NSError(domain: "Some error", code: 0)
+
+
     }
 }
 
