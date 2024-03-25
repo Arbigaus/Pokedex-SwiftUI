@@ -23,7 +23,6 @@ class PokemonListViewModel: ObservableObject {
         catch(let error) {
             print(error.localizedDescription)
         }
-
     }
 }
 
