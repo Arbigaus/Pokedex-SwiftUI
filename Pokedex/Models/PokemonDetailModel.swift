@@ -16,13 +16,26 @@ struct PokemonDetailModel: Decodable, Identifiable {
     let sprites: PokemonDetailSpritesModel
 }
 
-struct PokemonDetailTypeModel: Decodable {
+struct PokemonDetailTypeModel: Decodable, Hashable {
+    let id = UUID()
     let slot: Int
     let type: PokemonDetailType
+
+    enum CodingKeys: CodingKey {
+        case slot, type
+    }
 
     struct PokemonDetailType: Decodable {
         let name: String
         let url: String
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    static func == (lhs: PokemonDetailTypeModel, rhs: PokemonDetailTypeModel) -> Bool {
+        return lhs.id == rhs.id
     }
 }
 

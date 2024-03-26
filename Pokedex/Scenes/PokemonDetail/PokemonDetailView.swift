@@ -15,14 +15,21 @@ struct PokemonDetailView: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
+            Text(viewModel.pokeDetail?.name.capitalized ?? "Pokemon")
+                .font(.title)
             HStack(alignment: .center, spacing: 12) {
                 AsyncImage(url: URL(string: viewModel.pokeDetail?.sprites.frontDefault ?? ""))
-                    .frame(width: 80, height: 80)
+                    .frame(width: 120, height: 120)
                 AsyncImage(url: URL(string: viewModel.pokeDetail?.sprites.frontShiny ?? ""))
-                    .frame(width: 80, height: 80)
+                    .frame(width: 120, height: 120)
             }
-            Text(viewModel.pokeDetail?.name ?? "Nome")
+            HStack {
+                ForEach(viewModel.pokeDetail?.types ?? [], id: \.self) { type in
+                    Text(type.type.name)
+                        .background(Color.red)
+                }
+            }
         }
         .task {
             await viewModel.fetchDetail()

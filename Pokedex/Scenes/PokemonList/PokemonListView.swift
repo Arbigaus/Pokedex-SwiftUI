@@ -18,7 +18,7 @@ struct PokemonListView: View {
                         AsyncImage(url: pokemon.imgUrl)
                             .frame(width: 50, height: 50)
                             .padding(6)
-                        Text(pokemon.name)
+                        Text(pokemon.name.capitalized)
                             .font(.title)
                             .foregroundStyle(.black)
                     }
