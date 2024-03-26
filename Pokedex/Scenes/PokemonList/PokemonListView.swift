@@ -20,7 +20,7 @@ struct PokemonListView: View {
                             .padding(6)
                         Text(pokemon.name.capitalized)
                             .font(.title)
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.primary)
                     }
                 }
             }

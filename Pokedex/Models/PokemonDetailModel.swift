@@ -11,6 +11,7 @@ struct PokemonDetailModel: Decodable, Identifiable {
     let id: Int
     let name: String
     let weight: Int
+    let height: Int
     let types: [PokemonDetailTypeModel]
     let stats: [PokemonDetailStatModel]
     let sprites: PokemonDetailSpritesModel
@@ -39,7 +40,8 @@ struct PokemonDetailTypeModel: Decodable, Hashable {
     }
 }
 
-struct PokemonDetailStatModel: Decodable {
+struct PokemonDetailStatModel: Decodable, Hashable {
+    let id = UUID()
     let baseStat: Int
     let effort: Int
     let stat: PokemonDetailStat
@@ -53,6 +55,14 @@ struct PokemonDetailStatModel: Decodable {
     struct PokemonDetailStat: Decodable {
         let name: String
         let url: String
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    static func == (lhs: PokemonDetailStatModel, rhs: PokemonDetailStatModel) -> Bool {
+        return lhs.id == rhs.id
     }
 }
 
