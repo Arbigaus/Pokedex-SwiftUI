@@ -27,12 +27,13 @@ final class PokemonListServiceTest: XCTestCase {
     }
 
     func test_successFetchPokeList() async {
-        mockService.expected = .success
+        let data = PokemonListModel.mockPokeListModel()
+        mockService.expected = .success(data)
         do {
             let result = try await service.fetchPokeList()
 
             XCTAssertNotNil(result, "Pokemon list should not be nil")
-            XCTAssertEqual(result, PokemonListModel.mockPokeListModel())
+            XCTAssertEqual(result, data)
         } catch {
             XCTFail("Fetching Pokemon list should not throw an error")
         }
@@ -43,7 +44,7 @@ final class PokemonListServiceTest: XCTestCase {
         mockService.expected = .failure(nsError)
 
         do {
-            let result = try await service.fetchPokeList()
+            let _ = try await service.fetchPokeList()
 
             XCTFail("Returned susccess, exptect error instead")
         } catch(let error) {

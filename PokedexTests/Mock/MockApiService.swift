@@ -10,7 +10,7 @@ import MiniService
 @testable import Pokedex
 
 enum ExpectResponse {
-    case success
+    case success(Any)
     case failure(Error)
 }
 
@@ -45,8 +45,7 @@ final class MockAPIService: APIServiceProtocol {
     func get<ResponseType>(endpoint: String) async throws -> ResponseType where ResponseType : Decodable {
 
         switch expected {
-        case .success:
-            let mockData = PokemonListModel.mockPokeListModel()
+        case .success(let mockData):
             if let response = mockData as? ResponseType {
                 return response
             }
@@ -61,33 +60,4 @@ final class MockAPIService: APIServiceProtocol {
     }
 }
 
-extension PokemonListModel {
-    static func mockPokeListModel() -> PokemonListModel {
-        let results = [
-            PokemonListItemModel(name: "Pikachu", url: "https://pokeapi.co/api/v2/pokemon/25"),
-            PokemonListItemModel(name: "Bulbasaur", url: "https://pokeapi.co/api/v2/pokemon/1"),
-            // Add more mock PokemonListItemModel instances as needed
-        ]
-        return PokemonListModel(count: results.count, next: "https://pokeapi.co/api/v2/pokemon?offset=20&limit=20", previous: nil, results: results)
-    }
-}
 
-extension PokemonListModel: Equatable {
-    public static func == (lhs: PokemonListModel, rhs: PokemonListModel) -> Bool {
-        return lhs.results == rhs.results
-            && lhs.count == rhs.count
-            && lhs.next == rhs.next
-            && lhs.previous == rhs.previous
-    }
-}
-
-extension PokemonListItemModel: Equatable {
-    public static func == (lhs: PokemonListItemModel, rhs: PokemonListItemModel) -> Bool {
-        return lhs.id == rhs.id
-                && lhs.name == rhs.name
-                && lhs.url == rhs.url
-                && lhs.imgUrl == rhs.imgUrl
-    }
-    
-
-}
