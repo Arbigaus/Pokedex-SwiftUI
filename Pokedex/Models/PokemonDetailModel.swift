@@ -26,7 +26,10 @@ struct PokemonDetailTypeModel: Decodable, Hashable {
         case slot, type
     }
 
-    struct PokemonDetailType: Decodable {
+    struct PokemonDetailType: Decodable, Hashable {
+        var id: Int? {
+            url.idFromUrl()
+        }
         let name: String
         let url: String
     }

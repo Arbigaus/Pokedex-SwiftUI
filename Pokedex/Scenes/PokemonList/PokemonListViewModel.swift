@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import MiniService
 
 class PokemonListViewModel: ObservableObject {
     private let service: PokemonListServiceProtocol = PokemonListService()
@@ -17,7 +16,7 @@ class PokemonListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var isFinished = false
     @Published var pokemonFilteredList = [PokemonListItemModel]()
-    @Published var searchText = "" {
+    @Published var searchText: String = "" {
         didSet {
             searchPokemon()
         }
@@ -41,7 +40,6 @@ class PokemonListViewModel: ObservableObject {
     @MainActor
     func getNextPage() async {
         do {
-            print("PAGE ==> \(page)")
             let paginatedList = try await service.fetchPokeList(page: page)
             paginatedPokemonList.append(contentsOf: paginatedList.results)
             pokemonFilteredList.append(contentsOf: paginatedList.results)
@@ -56,7 +54,33 @@ class PokemonListViewModel: ObservableObject {
         }
     }
 
+    private func isSearchingByType() -> PokemonTypeModel.PokeTypes? {
+        return PokemonTypeModel.pokemonTypes.first(where: { $0.name == searchText.lowercased() } )
+    }
+
+    @MainActor
+    private func fetchListByType(_ id: Int) async {
+        do {
+            let pokeByType = try await service.fetchPokeListByType(id)
+            pokemonFilteredList = pokeByType.pokemon.map { poke in
+                return PokemonListItemModel(name: poke.pokemon.name, url: poke.pokemon.url)
+            }
+        }
+        catch(let error) {
+            print(error.localizedDescription)
+        }
+    }
+
     private func searchPokemon() {
+        isFinished = !searchText.isEmpty
+
+        if let type = isSearchingByType() {
+            Task {
+                await fetchListByType(type.id)
+            }
+            return
+        }
+
         if let id = Int(searchText) {
             self.pokemonFilteredList = self.pokemonList.filter { $0.id == id }
             return

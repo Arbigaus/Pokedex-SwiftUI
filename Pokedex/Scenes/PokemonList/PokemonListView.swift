@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct PokemonListView: View {
-    @StateObject private var viewModel = PokemonListViewModel()
+    @ObservedObject private var viewModel: PokemonListViewModel
+
+    init(viewModel: PokemonListViewModel = PokemonListViewModel()) {
+        self.viewModel = viewModel
+    }
 
     var body: some View {
         NavigationStack {
@@ -38,7 +42,7 @@ struct PokemonListView: View {
                         }
                 }
             }
-            .searchable(text: $viewModel.searchText)
+            .searchable(text: $viewModel.searchText, prompt: "Name, number or type")
             .listStyle(.inset)
             .navigationDestination(for: PokemonListItemModel.self) { poke in
                 PokemonDetailView(viewModel: PokemonDetailViewModel(pokeId: poke.id ?? 0))

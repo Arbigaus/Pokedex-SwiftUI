@@ -11,6 +11,7 @@ import MiniService
 protocol PokemonListServiceProtocol {
     func fetchAllPokemon() async throws -> PokemonListModel
     func fetchPokeList(page: Int) async throws -> PokemonListModel
+    func fetchPokeListByType(_ id: Int) async throws -> PokemonTypeModel
 }
 
 final class PokemonListService: PokemonListServiceProtocol {
@@ -33,9 +34,17 @@ final class PokemonListService: PokemonListServiceProtocol {
         let limit = 20
         let offSet = limit * page
         let endpoint = "pokemon?limit=\(limit)&offset=\(offSet)"
-        print(endpoint)
         do {
             let result: PokemonListModel = try await service.get(endpoint: endpoint)
+            return result
+        } catch(let error) {
+            throw error
+        }
+    }
+
+    func fetchPokeListByType(_ id: Int) async throws -> PokemonTypeModel {
+        do {
+            let result: PokemonTypeModel = try await service.get(endpoint: "type/\(id)")
             return result
         } catch(let error) {
             throw error
