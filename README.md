@@ -6,7 +6,7 @@ It is developed in the MVVM Architecture
 
 ### How to run
 
-To run this project, open the `Reelgood Assessment.xcodeproj` file with Xcode and run the project in a Simulator or Device with iOS 16 or above.
+To run this project, open the `Pokedex.xcodeproj` file with Xcode and run the project in a Simulator or Device with iOS 16 or above.
 
 ### Third Libraries
 
