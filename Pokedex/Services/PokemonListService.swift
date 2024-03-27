@@ -9,6 +9,7 @@ import Foundation
 import MiniService
 
 protocol PokemonListServiceProtocol {
+    func fetchAllPokemon() async throws -> PokemonListModel
     func fetchPokeList() async throws -> PokemonListModel
 }
 
@@ -17,6 +18,15 @@ final class PokemonListService: PokemonListServiceProtocol {
 
     init(service: APIServiceProtocol = APIService()) {
         self.service = service
+    }
+
+    func fetchAllPokemon() async throws -> PokemonListModel {
+        do {
+            let result: PokemonListModel = try await service.get(endpoint: "pokemon?limit=100000&offset=0")
+            return result
+        } catch(let error) {
+            throw error
+        }
     }
 
     func fetchPokeList() async throws -> PokemonListModel {

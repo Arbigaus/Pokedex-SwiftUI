@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct PokemonListView: View {
-    @ObservedObject private var viewModel = PokemonListViewModel()
+    @StateObject private var viewModel = PokemonListViewModel()
 
     var body: some View {
         NavigationStack {
-            List(viewModel.pokemonList) { pokemon in
+            List(viewModel.pokemonFilteredList) { pokemon in
                 NavigationLink(value: pokemon) {
                     HStack(spacing: 18) {
                         AsyncImage(url: pokemon.imgUrl)
@@ -24,6 +24,7 @@ struct PokemonListView: View {
                     }
                 }
             }
+            .searchable(text: $viewModel.searchText)
             .listStyle(.inset)
             .navigationDestination(for: PokemonListItemModel.self) { poke in
                 PokemonDetailView(viewModel: PokemonDetailViewModel(pokeId: poke.id ?? 0))
