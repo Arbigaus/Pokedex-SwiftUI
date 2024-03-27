@@ -12,16 +12,30 @@ struct PokemonListView: View {
 
     var body: some View {
         NavigationStack {
-            List(viewModel.pokemonFilteredList) { pokemon in
-                NavigationLink(value: pokemon) {
-                    HStack(spacing: 18) {
-                        AsyncImage(url: pokemon.imgUrl)
-                            .frame(width: 50, height: 50)
-                            .padding(6)
-                        Text(pokemon.name.capitalized)
-                            .font(.title)
-                            .foregroundStyle(.primary)
+            List {
+                ForEach(viewModel.pokemonFilteredList, id: \.self) { pokemon in
+                    NavigationLink(value: pokemon) {
+                        HStack(spacing: 18) {
+                            AsyncImage(url: pokemon.imgUrl)
+                                .frame(width: 50, height: 50)
+                                .padding(6)
+                            Text(pokemon.name.capitalized)
+                                .font(.title)
+                                .foregroundStyle(.primary)
+                        }
                     }
+                }
+
+                if !viewModel.isFinished {
+                    ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: 200)
+                        .foregroundColor(.black)
+                        .foregroundColor(.red)
+                        .onAppear {
+                            Task {
+                                await viewModel.getNextPage()
+                            }
+                        }
                 }
             }
             .searchable(text: $viewModel.searchText)
@@ -31,6 +45,8 @@ struct PokemonListView: View {
             }
             .isLoading(viewModel.isLoading)
             .navigationTitle("Pokémons")
+
+
         }
         .task {
             await viewModel.fetchPokemonList()
