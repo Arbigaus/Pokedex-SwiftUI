@@ -18,17 +18,43 @@ struct PokemonDetailView: View {
         let mainType = viewModel.pokeDetail?.types.first
         let pokeDetail = viewModel.pokeDetail
 
-        VStack(alignment: .center, spacing: 16) {
+        ZStack {
+            VStack(alignment: .center, spacing: 16) {
+                HeaderView(pokeDetail: pokeDetail,
+                           asyncImageUrl: viewModel.asyncImageUrl) {
+                    viewModel.setAsyncImageUrl()
+                }
+                StatsView(pokeDetail: pokeDetail)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .ignoresSafeArea(.all, edges: .bottom)
+            .background(Color("\(mainType?.type.name.capitalized ?? "")Background"))
+            .isLoading(viewModel.isLoading)
+        }
+        .task {
+            await viewModel.fetchDetail()
+        }
+    }
+
+    private struct HeaderView: View {
+        let pokeDetail: PokemonDetailModel?
+        let asyncImageUrl: String
+        let tapGesture: () -> Void
+
+        var body: some View {
             HStack(alignment: .top, spacing: 12) {
-                AsyncImage(url: URL(string: viewModel.pokeDetail?.sprites.frontDefault ?? "")) { image in
+                AsyncImage(url: URL(string: asyncImageUrl)) { image in
                     image.resizable()
                 } placeholder: {
                     ProgressView()
                 }
-                    .padding(0)
-                    .frame(width: 160, height: 160)
-                    .background(Color(UIColor.systemBackground))
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                .padding(0)
+                .frame(width: 160, height: 160)
+                .background(Color(UIColor.systemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .onTapGesture {
+                    tapGesture()
+                }
 
                 VStack(alignment: .leading) {
                     Text("#\(pokeDetail?.id ?? 0)")
@@ -50,29 +76,30 @@ struct PokemonDetailView: View {
                     }
                 }
             }
+        }
+    }
 
+    private struct StatsView: View {
+        let pokeDetail: PokemonDetailModel?
+
+        func stats(title: String, value: String) -> some View {
+            return HStack(alignment: .firstTextBaseline) {
+                Text("\(title):")
+                    .font(.system(size: 20, weight: .bold))
+                Spacer()
+                Text(value)
+                    .font(.system(size: 20))
+            }
+            .padding([.bottom], 2)
+        }
+
+        var body: some View {
             VStack(alignment: .leading) {
                 ForEach(pokeDetail?.stats ?? [], id: \.id) { stat in
-                    HStack(alignment: .firstTextBaseline) {
-                        Text("\(stat.stat.name.capitalized):")
-                            .fontWeight(.bold)
-                        Text("\(stat.baseStat)")
-                        Spacer()
-                    }
-
+                    stats(title: stat.stat.name.capitalized, value: "\(stat.baseStat)")
                 }
-                HStack(alignment: .firstTextBaseline) {
-                    Text("Height:")
-                        .fontWeight(.bold)
-                    Text("\(pokeDetail?.height ?? 0)")
-                    Spacer()
-                }
-                HStack(alignment: .firstTextBaseline) {
-                    Text("Weight:")
-                        .fontWeight(.bold)
-                    Text("\(pokeDetail?.weight ?? 0)")
-                    Spacer()
-                }
+                stats(title: "Height", value: "\(pokeDetail?.height ?? 0)")
+                stats(title: "Weight", value: "\(pokeDetail?.weight ?? 0)")
                 Spacer()
             }
             .frame(maxWidth: .infinity)
@@ -85,13 +112,6 @@ struct PokemonDetailView: View {
                 bottomTrailingRadius: 0,
                 topTrailingRadius: 16
             ))
-
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .ignoresSafeArea(.all, edges: .bottom)
-        .background(Color("\(mainType?.type.name.capitalized ?? "")Background"))
-        .task {
-            await viewModel.fetchDetail()
         }
     }
 }

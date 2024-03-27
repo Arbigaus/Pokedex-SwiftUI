@@ -28,10 +28,11 @@ struct PokemonListView: View {
             .navigationDestination(for: PokemonListItemModel.self) { poke in
                 PokemonDetailView(viewModel: PokemonDetailViewModel(pokeId: poke.id ?? 0))
             }
-            .task {
-                await viewModel.fetchPokemonList()
-            }
+            .isLoading(viewModel.isLoading)
             .navigationTitle("Pokémons")
+        }
+        .task {
+            await viewModel.fetchPokemonList()
         }
     }
 }
