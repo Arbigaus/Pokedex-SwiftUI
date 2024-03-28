@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct PokemonDetailView: View {
-    @ObservedObject private var viewModel: PokemonDetailViewModel
+    @Environment(\.presentationMode) var presentationMode
 
-    init(viewModel: PokemonDetailViewModel) {
-        self.viewModel = viewModel
-    }
+    @ObservedObject var viewModel: PokemonDetailViewModel
+    @Binding var typeName: String
 
     var body: some View {
         let mainType = viewModel.pokeDetail?.types.first
@@ -24,6 +23,11 @@ struct PokemonDetailView: View {
                            asyncImageUrl: viewModel.asyncImageUrl) {
                     viewModel.setAsyncImageUrl()
                 }
+            tapTypeGesture: { name in
+                typeName = name
+                presentationMode.wrappedValue.dismiss()
+            }
+
                 StatsView(pokeDetail: pokeDetail)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -39,7 +43,8 @@ struct PokemonDetailView: View {
     private struct HeaderView: View {
         let pokeDetail: PokemonDetailModel?
         let asyncImageUrl: String
-        let tapGesture: () -> Void
+        let tapImageGesture: () -> Void
+        let tapTypeGesture: (String) -> Void
 
         var body: some View {
             HStack(alignment: .top, spacing: 12) {
@@ -53,7 +58,7 @@ struct PokemonDetailView: View {
                 .background(Color(UIColor.systemBackground))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .onTapGesture {
-                    tapGesture()
+                    tapImageGesture()
                 }
 
                 VStack(alignment: .leading) {
@@ -72,6 +77,9 @@ struct PokemonDetailView: View {
                                 .padding([.bottom, .top], 6)
                                 .background(Color(name))
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
+                                .onTapGesture {
+                                    tapTypeGesture(name)
+                                }
                         }
                     }
                 }
@@ -114,8 +122,4 @@ struct PokemonDetailView: View {
             ))
         }
     }
-}
-
-#Preview {
-    PokemonDetailView(viewModel: PokemonDetailViewModel(pokeId: 1))
 }

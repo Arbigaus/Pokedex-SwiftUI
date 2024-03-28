@@ -45,7 +45,7 @@ struct PokemonListView: View {
             .searchable(text: $viewModel.searchText, prompt: "Name, number or type")
             .listStyle(.inset)
             .navigationDestination(for: PokemonListItemModel.self) { poke in
-                PokemonDetailView(viewModel: PokemonDetailViewModel(pokeId: poke.id ?? 0))
+                PokemonDetailView(viewModel: PokemonDetailViewModel(pokeId: poke.id ?? 0), typeName: $viewModel.searchText)
             }
             .isLoading(viewModel.isLoading)
             .navigationTitle("Pokémons")
